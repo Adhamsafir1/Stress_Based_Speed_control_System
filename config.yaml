@@ -1,0 +1,61 @@
+# Stress-Based Speed Control System — Configuration
+
+system:
+  name: "Stress-Based Speed Control System"
+  version: "1.0.0"
+  debug: false
+  log_level: "INFO"
+
+sensor:
+  mode: "simulation"          # "simulation" or "serial"
+  serial_port: "COM3"
+  baud_rate: 9600
+  sample_rate_hz: 10
+
+  heart_rate:
+    min: 40
+    max: 200
+    normal_range: [60, 100]
+
+  gsr:
+    min: 0.0
+    max: 25.0
+    normal_range: [1.0, 5.0]
+
+  spo2:
+    min: 85
+    max: 100
+    normal_range: [95, 100]
+
+stress_detection:
+  method: "ml"                # "rule_based" or "ml"
+  model_path: "models/stress_model.pkl"
+  window_size: 30
+
+  thresholds:
+    normal: 30
+    mild: 60
+    high: 80
+
+speed_control:
+  default_speed: 100
+  min_speed: 20
+  transition_rate: 5          # km/h per second
+
+  limits:
+    normal: 100
+    mild_stress: 70
+    high_stress: 50
+    critical: 30
+
+alerts:
+  enabled: true
+  sound: true
+  visual: true
+  log_to_file: true
+  cooldown_seconds: 30
+
+dashboard:
+  host: "0.0.0.0"
+  port: 5000
+  update_interval_ms: 1000

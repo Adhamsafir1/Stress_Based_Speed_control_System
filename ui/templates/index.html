@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Real-time driver stress monitoring and speed control dashboard"/>
+  <title>Stress Speed Control — Dashboard</title>
+  <link rel="stylesheet" href="/static/css/style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <div class="logo">
+      <span class="logo-icon">🚗</span>
+      <div>
+        <h1>Stress Speed Control</h1>
+        <p class="subtitle">Real-time Driver Monitoring System</p>
+      </div>
+    </div>
+    <div class="status-pill" id="conn-status">
+      <span class="dot"></span><span id="conn-text">Connecting...</span>
+    </div>
+  </div>
+</header>
+
+<main class="grid">
+
+  <!-- Stress Gauge -->
+  <section class="card card--stress" id="stress-card">
+    <h2 class="card-label">Stress Level</h2>
+    <div class="gauge-wrap">
+      <canvas id="gaugeCanvas" width="220" height="120"></canvas>
+      <div class="gauge-value">
+        <span id="stress-score">0</span><small>/100</small>
+      </div>
+    </div>
+    <div class="level-badge" id="level-badge">Normal</div>
+    <p class="level-msg" id="level-msg">Awaiting sensor data...</p>
+  </section>
+
+  <!-- Speed Panel -->
+  <section class="card card--speed">
+    <h2 class="card-label">Speed Control</h2>
+    <div class="speed-row">
+      <div class="speed-block">
+        <span class="speed-num" id="cur-speed">60</span>
+        <span class="speed-kmh">km/h</span>
+        <span class="speed-tag">Current</span>
+      </div>
+      <div class="speed-arrow">&#8594;</div>
+      <div class="speed-block">
+        <span class="speed-num" id="tgt-speed">100</span>
+        <span class="speed-kmh">km/h</span>
+        <span class="speed-tag">Limit</span>
+      </div>
+    </div>
+    <div class="bar-track">
+      <div class="bar-fill" id="speed-bar"></div>
+    </div>
+  </section>
+
+  <!-- Sensors -->
+  <section class="card card--sensors">
+    <h2 class="card-label">Physiological Signals</h2>
+    <div class="sensor-row">
+      <div class="sensor-tile" id="tile-hr">
+        <span class="sensor-emoji">❤️</span>
+        <span class="sensor-val" id="hr-val">--</span>
+        <span class="sensor-unit">bpm</span>
+        <span class="sensor-name">Heart Rate</span>
+      </div>
+      <div class="sensor-tile" id="tile-gsr">
+        <span class="sensor-emoji">💧</span>
+        <span class="sensor-val" id="gsr-val">--</span>
+        <span class="sensor-unit">µS</span>
+        <span class="sensor-name">GSR</span>
+      </div>
+      <div class="sensor-tile" id="tile-spo2">
+        <span class="sensor-emoji">🩸</span>
+        <span class="sensor-val" id="spo2-val">--</span>
+        <span class="sensor-unit">%</span>
+        <span class="sensor-name">SpO₂</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- History Chart -->
+  <section class="card card--chart">
+    <h2 class="card-label">Stress History — Last 60 Seconds</h2>
+    <canvas id="histChart" height="100"></canvas>
+  </section>
+
+  <!-- Alert Log -->
+  <section class="card card--alerts">
+    <h2 class="card-label">Alert Log</h2>
+    <ul class="alert-list" id="alert-list">
+      <li class="alert-empty">No alerts triggered yet.</li>
+    </ul>
+  </section>
+
+</main>
+
+<script src="/static/js/app.js"></script>
+</body>
+</html>
